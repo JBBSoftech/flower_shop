@@ -1019,7 +1019,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                 ),
-                                child: Text('Shop Now', style: const TextStyle(fontSize: 12)),
+                                child: Text('Buy', style: const TextStyle(fontSize: 12)),
                               ),
                             ],
                           ),
