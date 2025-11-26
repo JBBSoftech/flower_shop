@@ -891,7 +891,7 @@ class _HomePageState extends State<HomePage> {
                         
                         const SizedBox(width: 8),
                         Text(
-                          'Ramya P',
+                          'Ramya',
                           style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -970,7 +970,7 @@ class _HomePageState extends State<HomePage> {
                             _filterProducts(value);
                           },
                           decoration: InputDecoration(
-                            hintText: 'Welcome',
+                            hintText: ' Welcome to our shop',
                             prefixIcon: const Icon(Icons.search),
                             suffixIcon: const Icon(Icons.filter_list),
                             border: OutlineInputBorder(
@@ -1365,79 +1365,137 @@ class _HomePageState extends State<HomePage> {
                     itemBuilder: (context, index) {
                       final item = _cartManager.items[index];
                       return Card(
-                        margin: const EdgeInsets.all(8),
+                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         child: Padding(
-                          padding: const EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(16),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              // Product image
                               Container(
-                                width: 60,
-                                height: 60,
-                                color: Colors.grey[300],
-                                child: item.image != null && item.image!.isNotEmpty
-                                    ? (item.image!.startsWith('data:image/')
-                                    ? Image.memory(
-                                  base64Decode(item.image!.split(',')[1]),
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => const Icon(Icons.image),
-                                )
-                                    : Image.network(
-                                  item.image!,
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) => const Icon(Icons.image),
-                                ))
-                                    : const Icon(Icons.image),
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: item.image != null && item.image!.isNotEmpty
+                                      ? (item.image!.startsWith('data:image/')
+                                          ? Image.memory(
+                                              base64Decode(item.image!.split(',')[1]),
+                                              width: 70,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error, stackTrace) => 
+                                                  const Icon(Icons.image, color: Colors.grey),
+                                            )
+                                          : Image.network(
+                                              item.image!,
+                                              width: 70,
+                                              height: 70,
+                                              fit: BoxFit.cover,
+                                              errorBuilder: (context, error, stackTrace) => 
+                                                  const Icon(Icons.image, color: Colors.grey),
+                                            ))
+                                      : const Icon(Icons.image, color: Colors.grey, size: 30),
+                                ),
                               ),
-                              const SizedBox(width: 12),
+                              const SizedBox(width: 16),
+                              // Product details
                               Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                                    // Show current price (effective price)
                                     Text(
-                                      PriceUtils.formatPrice(item.effectivePrice),
+                                      item.name,
                                       style: const TextStyle(
-                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.blue,
+                                        fontSize: 16,
+                                        height: 1.2,
                                       ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    // Show original price if there's a discount
-                                    if (item.discountPrice > 0 && item.price != item.discountPrice)
-                                      Text(
-                                        PriceUtils.formatPrice(item.price),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          decoration: TextDecoration.lineThrough,
-                                          color: Colors.grey.shade600,
+                                    const SizedBox(height: 8),
+                                    // Price section
+                                    Row(
+                                      children: [
+                                        Text(
+                                          PriceUtils.formatPrice(item.effectivePrice),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.blue,
+                                          ),
                                         ),
-                                      ),
+                                        if (item.discountPrice > 0 && item.price != item.discountPrice) ...[
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            PriceUtils.formatPrice(item.price),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              decoration: TextDecoration.lineThrough,
+                                              color: Colors.grey.shade600,
+                                            ),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
-                              Row(
+                              // Quantity controls
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      if (item.quantity > 1) {
-                                        _cartManager.updateQuantity(item.id, item.quantity - 1);
-                                      } else {
-                                        _cartManager.removeItem(item.id);
-                                      }
-                                    },
-                                    icon: const Icon(Icons.remove),
-                                  ),
-                                  Text('${item.quantity}', style: const TextStyle(fontSize: 16)),
-                                  IconButton(
-                                    onPressed: () {
-                                      _cartManager.updateQuantity(item.id, item.quantity + 1);
-                                    },
-                                    icon: const Icon(Icons.add),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade300),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            if (item.quantity > 1) {
+                                              _cartManager.updateQuantity(item.id, item.quantity - 1);
+                                            } else {
+                                              _cartManager.removeItem(item.id);
+                                            }
+                                          },
+                                          icon: const Icon(Icons.remove, size: 20),
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(
+                                            minWidth: 36,
+                                            minHeight: 36,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: 36,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            item.quantity.toString(),
+                                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                                          ),
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            _cartManager.updateQuantity(item.id, item.quantity + 1);
+                                          },
+                                          icon: const Icon(Icons.add, size: 20),
+                                          padding: EdgeInsets.zero,
+                                          constraints: const BoxConstraints(
+                                            minWidth: 36,
+                                            minHeight: 36,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
