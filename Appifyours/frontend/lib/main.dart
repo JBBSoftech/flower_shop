@@ -246,7 +246,7 @@ class MyApp extends StatelessWidget {
 
 // API Configuration
 class ApiConfig {
-  static const String baseUrl = 'http://192.168.1.5:5000';
+  static String get baseUrl => Environment.apiBase;
   static const String adminObjectId = '69257132848b7a78482dca18';
 }
 
@@ -270,7 +270,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _fetchAppNameAndNavigate() async {
     try {
       final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/api/admin-element-screen/${ApiConfig.adminObjectId}/shop-name'),
+        Uri.parse('${ApiConfig.baseUrl}/admin-element-screen/${ApiConfig.adminObjectId}/shop-name'),
       );
       
       if (response.statusCode == 200) {
@@ -592,7 +592,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://192.168.1.5:5000/api/user/signup'),
+        Uri.parse('http://10.209.201.130:5000/api/user/signup'),
         headers: {'Content-Type': 'application/json'},
         body: json.encode({
           'firstName': firstName,
