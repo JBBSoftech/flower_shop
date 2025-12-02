@@ -27,4 +27,5 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-  uses-material-design: true${hasImages ? '\n  assets:\n    - assets/images/' : ''}
+  uses-material-design: true
+${hasImages ? '  assets:\n    - assets/images/' : ''}
