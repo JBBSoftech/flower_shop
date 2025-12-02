@@ -31,7 +31,7 @@ jobs:
           flutter-version: '3.24.3'
           channel: 'stable'
           cache: true
-          cache-key: "flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}"
+          cache-key: "flutter-${{ runner.os }}-${{ hashFiles('**/pubspec.yaml') }}"
 
       - name: Verify Flutter installation
         run: flutter doctor -v
