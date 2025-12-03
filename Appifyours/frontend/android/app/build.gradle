@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace "com.appifyours.app"
-    compileSdk 33
+    compileSdk 34
     ndkVersion "25.1.8937393"
 
     compileOptions {
@@ -22,7 +22,7 @@ android {
     defaultConfig {
         applicationId "com.appifyours.app"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
